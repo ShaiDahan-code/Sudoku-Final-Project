@@ -1,0 +1,21 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 0 20px;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 20px;
+  font-size: 2em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: color 0.2s ease;
+}
+nav a:hover {
+  color: #555;
+}

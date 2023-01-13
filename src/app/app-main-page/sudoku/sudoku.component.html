@@ -1,0 +1,7 @@
+<h1>{{ title }}</h1>
+<div class="grid">
+  <div *ngFor="let cell of cells; let i = index" class="cell" [ngClass]="{'selected': selectedIndex === i}">
+    <button (click)="select(i)" *ngIf="!cell.value">{{ cell.value }}</button>
+    <span *ngIf="cell.value">{{ cell.value }}</span>
+  </div>
+</div>

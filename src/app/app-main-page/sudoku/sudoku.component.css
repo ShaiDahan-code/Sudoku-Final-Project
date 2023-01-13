@@ -1,0 +1,22 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-gap: 1px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border: solid 1px #ddd;
+  font-size: 2em;
+  font-weight: bold;
+  width: 50px;
+  height: 50px;
+}
+
+.cell button {
+  background-color: transparent;
+  border: none;
+
