@@ -4,17 +4,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import {MainPageComponent} from './app-main-page/app-main-page.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ActivatedRoute, RouterModule} from "@angular/router";
+import {RouterModule} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { SudokuComponent } from './app-main-page/sudoku/sudoku.component';
+import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
     AppNavbarComponent,
-    SudokuComponent
+    SudokuComponent,
+    SudokuGameComponent
   ],
   imports: [
     BrowserModule,

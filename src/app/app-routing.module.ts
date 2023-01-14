@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {MainPageComponent} from "./app-main-page/app-main-page.component";
-import {SudokuComponent} from "./app-main-page/sudoku/sudoku.component";
+import {SudokuGameComponent} from "./app-main-page/sudoku-game/sudoku-game.component";
+
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: MainPageComponent },
-      { path: 'Sudoku/Easy', component: SudokuComponent },
-      { path: 'game2', component: MainPageComponent },
-      { path: 'game3', component: MainPageComponent }
+      { path: 'Sudoku/Easy', component: SudokuGameComponent,data: {Level:"Easy"} },
+      { path: 'Sudoku/Medium', component: SudokuGameComponent ,data: {Level:"Medium"}},
+      { path: 'Sudoku/Hard', component: SudokuGameComponent,data: {Level:"Hard"} }
     ])
   ],
   exports: [RouterModule]

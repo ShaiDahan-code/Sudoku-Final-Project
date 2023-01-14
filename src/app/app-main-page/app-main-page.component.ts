@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import {Router} from "@angular/router";
+
+export enum Level{
+  Easy=0,
+  Medium=1,
+  Hard=2
+}
+
 
 @Component({
   selector: 'app-main-page',
@@ -8,7 +15,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,5 +30,9 @@ export class MainPageComponent implements OnInit {
 
   openCredits() {
     // code to open the credits goes here
+  }
+
+  OpenGame(value : string) {
+    this.router.navigate(['Sudoku/' + value]);
   }
 }
