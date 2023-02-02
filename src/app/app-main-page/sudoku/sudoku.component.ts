@@ -14,6 +14,7 @@ export class SudokuComponent {
   grid!: string[][];
   selectedCell: GridPosition = {row:-1, col:-1};
 
+  @Input() sudokuStringSolve !:string;
   @Input()
   set sudokuString(sudoku: string) {
     this.grid = [];
