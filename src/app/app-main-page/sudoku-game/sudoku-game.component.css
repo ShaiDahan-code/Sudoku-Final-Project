@@ -1,0 +1,10 @@
+.container {
+  text-align: center;
+  padding: 15px;
+}
+
+.string {
+  font-size: 30px;
+  font-weight: bold;
+  color: maroon;
+}
