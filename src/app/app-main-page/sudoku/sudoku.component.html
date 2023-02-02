@@ -1,7 +1,17 @@
-<h1>{{ title }}</h1>
-<div class="grid">
-  <div *ngFor="let cell of cells; let i = index" class="cell" [ngClass]="{'selected': selectedIndex === i}">
-    <button (click)="select(i)" *ngIf="!cell.value">{{ cell.value }}</button>
-    <span *ngIf="cell.value">{{ cell.value }}</span>
-  </div>
+<div class="Sudoku">
+  <table>
+    <tr *ngFor="let row of grid">
+      <td *ngFor="let cell of row" (click)="selectedCell = cell">{{ cell === '' ? cell : cell }}</td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="selectedCell !== ''" class="options">
+  <table *ngFor="let i of [0, 1]; let rowIndex = index">
+    <tr>
+      <td *ngFor="let j of [0, 1, 2, 3, 4]; let colIndex = index">
+        <button (click)="selectedCell = (rowIndex * 5 + colIndex + 1).toString()">{{ rowIndex * 5 + colIndex + 1 }}</button>
+      </td>
+    </tr>
+  </table>
 </div>
