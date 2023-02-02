@@ -9,6 +9,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { SudokuComponent } from './app-main-page/sudoku/sudoku.component';
 import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.component';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.com
     BrowserAnimationsModule,
     MatButtonModule,
     RouterModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+
 
 
 let FILES_PUZZLE: string[] = ["EasyPuzzle.txt","MediumPuzzle.txt","HardPuzzle.txt"];
@@ -17,38 +19,32 @@ DIFFICULT.set("Hard", 2);
 export class SudokuGameComponent implements OnInit{
   level:string = 'easy';
   private rowSelected!: number;
-  constructor(private route: ActivatedRoute) {
 
+  boardString!: string;
+  boardStringSolve!: string;
+  constructor(private route: ActivatedRoute,private httpClient: HttpClient){
 
   }
+
   ngOnInit(): void {
-      this.route.data.subscribe((data) => {
-        this.level = data['Level'];
+    this.route.data.subscribe((data) => {
+      this.level = data['Level'];
+    });
+    //generate a random number between 0 and 2000
+    this.rowSelected = Math.floor(Math.random() * 2000);
+    this.selecteRandomBoard();
+  }
+
+  selecteRandomBoard() {
+    //read the file and get the string inside. the file is in path "../../../assets/MediumPuzzle.txt"
+    let file = FILES_PUZZLE[DIFFICULT.get(this.level)!];
+    this.httpClient.get("../../../assets/" + file, {responseType: 'text'}).subscribe((data) => {
+      //get rowSelected row from the file
+      let rows = data.split("\n");
+      this.boardString = rows[this.rowSelected].split(",")[0];
+      this.boardStringSolve = rows[this.rowSelected].split(",")[1];
     });
 
   }
 
-  createStringBoard(): string {
-    const reader = new FileReader();
-    let file_to_read = ""
-    let index = DIFFICULT.get(this.level);
-
-    if (index) {
-      const file_to_read = new File(['content of the file'], FILES_PUZZLE[index], { type: 'text/plain' });
-      reader.readAsText(file_to_read);
-
-      reader.onload = () => {
-          const rows = (reader.result as string).split('\n');
-          //resolve(rows[this.rowSelected]);
-          return rows[this.rowSelected]
-        };
-    }
-
-    return 'Invalid level';
-  }
-
-
-  GetStringBoardSolve() {
-    return ""
-  }
 }

@@ -13,10 +13,19 @@ export interface GridPosition {
 export class SudokuComponent {
   grid!: string[][];
   selectedCell: GridPosition = {row:-1, col:-1};
+  unvalidBoard: boolean = false;
 
   @Input() sudokuStringSolve !:string;
   @Input()
   set sudokuString(sudoku: string) {
+    if(!sudoku){
+      this.unvalidBoard = true;
+      return;
+    }
+    else if(sudoku.length !== 81) {
+      this.unvalidBoard = true;
+      return;
+    }
     this.grid = [];
     for (let i = 0; i < 9; i++) {
       this.grid[i] = [];
