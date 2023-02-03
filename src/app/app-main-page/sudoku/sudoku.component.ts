@@ -146,9 +146,6 @@ export class SudokuComponent {
 
   arrayToDisplay() {
     let arr = [0,1,2,3,4,5,6,7,8,9];
-    if(this.grid[this.selectedCell.row][this.selectedCell.col].content === '0') {
-      return arr;
-    }
     //remove from the arr the number in this.grid[this.selectedCell.row][this.selectedCell.col]
     arr.splice(arr.indexOf(parseInt(this.grid[this.selectedCell.row][this.selectedCell.col].content)),1);
     return arr;
