@@ -1,16 +1,12 @@
 <div class="Sudoku">
-  <table>
+  <table style="background:#ffffff">
     <tr *ngFor="let row of grid; let i=index ">
       <td *ngFor="let cell of row;let j=index" (click)="selectCell(i,j)">{{ cell === '0' ? '' : cell }}</td>
     </tr>
   </table>
-  <div *ngIf="displayOptions()" class="options">
-    <table>
-      <tr>
-        <td *ngFor="let j of arrayToDisplay(); let colIndex = index">
-          <button (click)="selectedNumber(j)">{{j}}</button>
-        </td>
-      </tr>
-    </table>
+  <div *ngIf="displayOptions()" class="options-container">
+    <div *ngFor="let j of arrayToDisplay();let colIndex=index" class="option" (click)="selectedNumber(j)">
+      <div >{{j}}</div>
+    </div>
   </div>
 </div>
