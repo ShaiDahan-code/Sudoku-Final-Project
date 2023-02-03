@@ -1,0 +1,15 @@
+.fullGameDisplay{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  .container {
+    text-align: center;
+  }
+  .string {
+    font-size: 30px;
+    font-weight: bold;
+    color: maroon;
+  }
+}

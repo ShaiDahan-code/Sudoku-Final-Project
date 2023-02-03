@@ -13,7 +13,7 @@ DIFFICULT.set("Hard", 2);
 @Component({
   selector: 'app-sudoku-game',
   templateUrl: './sudoku-game.component.html',
-  styleUrls: ['./sudoku-game.component.css']
+  styleUrls: ['./sudoku-game.component.scss']
 })
 
 export class SudokuGameComponent implements OnInit{
