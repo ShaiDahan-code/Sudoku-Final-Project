@@ -6,7 +6,7 @@
   </table>
   <div *ngIf="displayOptions()" class="options-container">
     <div *ngFor="let j of arrayToDisplay();let colIndex=index" class="option" (click)="selectedNumber(j)">
-      <div >{{j}}</div>
+      <div >{{j === 0 ? '' : j }}</div>
     </div>
   </div>
 </div>

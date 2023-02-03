@@ -69,14 +69,14 @@ export class SudokuComponent {
   checkForValidation(row: number, col: number, numberSelected : number){
     let is_invalid = false;
     for(let i = 0 ; i< 9 ;i++){
-      if (this.grid[row][i].content == numberSelected.toString() && i != col){
+      if (numberSelected != 0 && this.grid[row][i].content == numberSelected.toString() && i != col){
         this.grid[row][i].style.add("duplicate");
         is_invalid = true;
       }
       else{
         this.grid[row][i].style.delete("duplicate");
       }
-      if (this.grid[i][col].content == numberSelected.toString() && i != row){
+      if (numberSelected != 0 && this.grid[i][col].content == numberSelected.toString() && i != row){
         this.grid[i][col].style.add("duplicate");
         is_invalid = true;
       }
@@ -98,7 +98,7 @@ export class SudokuComponent {
     for(let i = centerRow-1 ; i < centerRow+2 ;i++){
       for(let j = centerCol-1 ; j < centerCol+2 ;j++){
         if(row != i || col != j){
-          if(numberSelected.toString() == this.grid[i][j].content){
+          if(numberSelected && numberSelected.toString() == this.grid[i][j].content){
             this.grid[i][j].style.add("duplicate");
             is_invalid = true;
           }
