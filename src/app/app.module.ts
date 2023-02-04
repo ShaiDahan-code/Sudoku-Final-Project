@@ -11,6 +11,7 @@ import { SudokuComponent } from './app-main-page/sudoku/sudoku.component';
 import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { TimerComponent } from './app-main-page/timer-component/timer-component.component';
+import { ImageToTextComponent } from './app-main-page/image-to-text/image-to-text.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TimerComponent } from './app-main-page/timer-component/timer-component.
     AppNavbarComponent,
     SudokuComponent,
     SudokuGameComponent,
-    TimerComponent
+    TimerComponent,
+    ImageToTextComponent
   ],
   imports: [
     BrowserModule,
