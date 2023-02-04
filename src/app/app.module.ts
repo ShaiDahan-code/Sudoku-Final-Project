@@ -10,6 +10,7 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { SudokuComponent } from './app-main-page/sudoku/sudoku.component';
 import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { TimerComponent } from './app-main-page/timer-component/timer-component.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     MainPageComponent,
     AppNavbarComponent,
     SudokuComponent,
-    SudokuGameComponent
+    SudokuGameComponent,
+    TimerComponent
   ],
   imports: [
     BrowserModule,
