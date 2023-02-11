@@ -247,7 +247,10 @@ nav {
   cursor: pointer;
 }
 
-
+.main-grid-cell.filled {
+  background-color: var(--filled-bg);
+  color: var(--filled-color);
+}
 .main-grid-cell.selected {
   background-color: var(--blue);
   color: var(--white);

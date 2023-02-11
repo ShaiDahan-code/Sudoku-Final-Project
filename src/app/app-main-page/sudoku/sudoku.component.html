@@ -5,10 +5,9 @@
     </tr>
   </div>
   <div *ngIf="displayOptions()" class="numbers">
-    <div *ngFor="let j of arrayToDisplay();let colIndex=index" class="number" (click)="selectedNumber(j)">
-      <div >{{j === 0 ? '' : j }}</div>
+    <div *ngFor="let j of arrayToDisplay();let colIndex=index" class="{{j === 0 ?'delete': 'number'}}" (click)="selectedNumber(j)">
+      <div class="{{j === 0 ?'delete': ''}}">{{j === 0 ? 'X' : j }}</div>
     </div>
-    <div class="delete">X</div>
   </div>
 </div>
 
