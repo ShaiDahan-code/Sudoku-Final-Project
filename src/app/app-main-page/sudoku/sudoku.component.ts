@@ -54,10 +54,18 @@ export class SudokuComponent {
       return;
     }
 
+    this.deleteSelectedCell();
+    this.grid[row][col].style.add("selected");
     this.selectedCell.row = row;
     this.selectedCell.col = col;
   }
-
+  deleteSelectedCell() {
+    for (let i = 0 ; i <9 ; i++){
+      for(let j =0 ; j < 9 ; j++){
+        this.grid[i][j].style.delete("selected");
+      }
+    }
+  }
   selectedNumber(numberSelected : number) {
     this.grid[this.selectedCell.row][this.selectedCell.col].content = numberSelected.toString();
     this.checkForValidation(this.selectedCell.row,this.selectedCell.col,numberSelected);
@@ -70,18 +78,18 @@ export class SudokuComponent {
     let is_invalid = false;
     for(let i = 0 ; i< 9 ;i++){
       if (numberSelected != 0 && this.grid[row][i].content == numberSelected.toString() && i != col){
-        this.grid[row][i].style.add("duplicate");
+        this.grid[row][i].style.add("err");
         is_invalid = true;
       }
       else{
-        this.grid[row][i].style.delete("duplicate");
+        this.grid[row][i].style.delete("err");
       }
       if (numberSelected != 0 && this.grid[i][col].content == numberSelected.toString() && i != row){
-        this.grid[i][col].style.add("duplicate");
+        this.grid[i][col].style.add("err");
         is_invalid = true;
       }
       else{
-        this.grid[i][col].style.delete("duplicate");
+        this.grid[i][col].style.delete("err");
       }
     }
     let centerRow = row;
@@ -99,11 +107,11 @@ export class SudokuComponent {
       for(let j = centerCol-1 ; j < centerCol+2 ;j++){
         if(row != i || col != j){
           if(numberSelected && numberSelected.toString() == this.grid[i][j].content){
-            this.grid[i][j].style.add("duplicate");
+            this.grid[i][j].style.add("err");
             is_invalid = true;
           }
           else{
-            this.grid[i][j].style.delete("duplicate");
+            this.grid[i][j].style.delete("err");
           }
         }
       }
@@ -159,4 +167,14 @@ export class SudokuComponent {
     }
     return classes;
   }
+
+  addStyle(i: number, j: number) {
+    let style ="";
+    if (i === 2 || i === 5)
+      style += " margin-right: 10px;";
+    if (j === 2 || j === 5)
+      style += " margin-bottom: 10px;";
+    return style;
+  }
 }
+

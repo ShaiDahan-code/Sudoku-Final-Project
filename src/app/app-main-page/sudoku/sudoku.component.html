@@ -1,12 +1,14 @@
-<div class="Sudoku">
-  <table style="background:#ffffff">
+<div class="">
+  <div class="main-sudoku-grid">
     <tr *ngFor="let row of grid; let i=index ">
-      <td [class]="getClasses(grid[i][j].style)" *ngFor="let cell of row;let j=index" (click)="selectCell(i,j)">{{ cell.content === '0' ? '' : cell.content }}</td>
+      <td class="main-grid-cell" [class] ="getClasses(grid[i][j].style)" [style]="addStyle(i,j)" *ngFor="let cell of row;let j=index" (click)="selectCell(i,j)">{{ cell.content === '0' ? '' : cell.content }}</td>
     </tr>
-  </table>
-  <div *ngIf="displayOptions()" class="options-container">
-    <div *ngFor="let j of arrayToDisplay();let colIndex=index" class="option" (click)="selectedNumber(j)">
+  </div>
+  <div *ngIf="displayOptions()" class="numbers">
+    <div *ngFor="let j of arrayToDisplay();let colIndex=index" class="number" (click)="selectedNumber(j)">
       <div >{{j === 0 ? '' : j }}</div>
     </div>
+    <div class="delete">X</div>
   </div>
 </div>
+
