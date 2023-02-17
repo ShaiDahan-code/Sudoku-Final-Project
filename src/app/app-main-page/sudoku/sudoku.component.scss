@@ -302,9 +302,6 @@ nav {
 
 .pause-btn {
   position: absolute;
-  right: 10px;
-  height: 30px;
-  width: 30px;
   border-radius: var(--border-radius);
   background-color: var(--blue);
   color: var(--white);
@@ -331,7 +328,10 @@ nav {
   font-size: var(--font-size);
   cursor: pointer;
 }
-
+.number:hover {
+  flex:2;
+  background-color: var(--blue);
+}
 .delete {
   background-color: var(--red);
   color: var(--white);
