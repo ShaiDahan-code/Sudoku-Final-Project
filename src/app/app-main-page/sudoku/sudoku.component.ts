@@ -130,7 +130,7 @@ export class SudokuComponent {
       this.grid[row][col].style.add("valid");
       this.grid[row][col].style.delete("invalid");
     }
-
+    this.deleteHover();
 
   }
 
@@ -182,7 +182,13 @@ export class SudokuComponent {
       style += " margin-bottom: 10px;";
     return style;
   }
-
+  deleteHover() {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        this.grid[i][j].style.delete("hover")
+      }
+    }
+  }
   private displaySelectedValid(row: number, col: number) {
     for (let i = 0; i < 9; i++) {
       this.grid[row][i].style.add("hover");
@@ -207,5 +213,7 @@ export class SudokuComponent {
       }
     }
   }
+
+
 }
 

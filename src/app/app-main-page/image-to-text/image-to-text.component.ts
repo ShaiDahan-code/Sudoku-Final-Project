@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild,ElementRef } from '@angular/core';
 import * as Tesseract from 'tesseract.js'
 
 @Component({
@@ -9,14 +9,16 @@ import * as Tesseract from 'tesseract.js'
 
 export class ImageToTextComponent implements OnInit {
   imageText!: any;
-
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
   uploadImage(event :any) {
     const file = event.target.files[0];
+    let loadingPopup = document.getElementById('loading-clear') || document.getElementById('loading-popup-display') ;
+
     Tesseract
       .recognize(file)
       .then((res: any) => {
@@ -25,8 +27,17 @@ export class ImageToTextComponent implements OnInit {
           .replace(/[a-zA-Z]/g, "0").replaceAll(' ','0');
         this.imageText = this.checkEveryLineSize(this.imageText.split("\n"));
         console.log(this.imageText);
+        loadingPopup = document.getElementById('loading-clear') || document.getElementById('loading-popup-display');
+        if (loadingPopup) {
+          loadingPopup.id = 'loading-clear';
+        }
       })
       .catch(console.error);
+    console.log("Here!")
+    loadingPopup = document.getElementById('loading-clear') || document.getElementById('loading-popup-display');
+    if (loadingPopup) {
+      loadingPopup.id = 'loading-clear';
+    }
   }
   replaceBarWithSpace(text:string) {
     const rows = text.split("\n");
@@ -43,5 +54,13 @@ export class ImageToTextComponent implements OnInit {
       return str;
     }).join("");
   }
+
+  chooseFileEvent() {
+    const loadingPopup = document.getElementById('loading-clear');
+    if (loadingPopup) {
+      loadingPopup.id = "loading-popup-display";
+    }
+  }
+
 }
 

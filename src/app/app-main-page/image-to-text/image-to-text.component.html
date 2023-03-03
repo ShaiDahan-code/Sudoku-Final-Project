@@ -1,2 +1,6 @@
-<input type="file" (change)="uploadImage($event)">
+<input id="fileEvent" type="file" (change)="uploadImage($event)" (click)="chooseFileEvent()" >
 <p>{{ imageText }}</p>
+<div id="loading-clear">
+  <div class="loading-icon"></div>
+  <div class="loading-text">Loading...</div>
+</div>
