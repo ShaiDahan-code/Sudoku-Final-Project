@@ -8,7 +8,26 @@
         <li class="nav-item"></li>
         <li class="nav-item"><a class="nav-link" href="#" style="font-size: 39px;">Settings</a></li>
         <li class="nav-item"></li>
-      </ul><a  (click)="openCreditsDialog()" style="font-size: 40px;--bs-primary: #5b7293;--bs-primary-rgb: 91,114,147;">credits</a>
+      </ul><a  (click)="openModal(template)" style="font-size: 40px;--bs-primary: #5b7293;--bs-primary-rgb: 91,114,147;">credits</a>
     </div>
   </div>
 </nav>
+
+<!-- Open The Modal for the credit-->
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Game Credit</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <h2>Developers</h2>
+      <ul>
+        <li>Shai Dahan</li>
+        <li>Sarel Alush</li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>

@@ -12,9 +12,12 @@ import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.com
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { TimerComponent } from './app-main-page/timer-component/timer-component.component';
 import { ImageToTextComponent } from './app-main-page/image-to-text/image-to-text.component';
-import { CreditsPopUpComponent } from './app-navbar/credits-pop-up/credits-pop-up.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { AppFooterComponent } from './app-footer/app-footer.component';
+import {MatInputModule} from "@angular/material/input";
+import {BsDropdownConfig, BsDropdownModule} from "ngx-bootstrap/dropdown";
+import {BsModalService, ModalModule} from "ngx-bootstrap/modal";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 
 @NgModule({
   declarations: [
@@ -25,7 +28,6 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     SudokuGameComponent,
     TimerComponent,
     ImageToTextComponent,
-    CreditsPopUpComponent,
     AppFooterComponent
   ],
   imports: [
@@ -35,9 +37,13 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
     MatDialogModule,
     RouterModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatInputModule,
+    BsDatepickerModule.forRoot(),
+    BsDropdownModule,
+    ModalModule
   ],
-  providers: [],
+  providers: [BsDropdownConfig,BsModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

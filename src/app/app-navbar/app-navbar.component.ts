@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {CreditsPopUpComponent} from "./credits-pop-up/credits-pop-up.component";
+import {Component, TemplateRef} from '@angular/core';
+import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +7,11 @@ import {CreditsPopUpComponent} from "./credits-pop-up/credits-pop-up.component";
   styleUrls: ['./app-navbar.component.css']
 })
 export class AppNavbarComponent {
-  constructor(private dialog: MatDialog) {
+  modalRef!: BsModalRef;
+  constructor(private modalService: BsModalService) {
   }
-  openCreditsDialog() {
-    this.dialog.open(CreditsPopUpComponent,{width: '500px', height: '500px'});
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 }
