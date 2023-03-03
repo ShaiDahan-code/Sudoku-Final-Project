@@ -1,0 +1,9 @@
+.myClass{
+  /* Make sure all in one flow, without scroll, only one page*/
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  app-footer{
+    margin-top: auto;
+  }
+}

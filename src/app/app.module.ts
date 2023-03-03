@@ -12,6 +12,9 @@ import { SudokuGameComponent } from './app-main-page/sudoku-game/sudoku-game.com
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { TimerComponent } from './app-main-page/timer-component/timer-component.component';
 import { ImageToTextComponent } from './app-main-page/image-to-text/image-to-text.component';
+import { CreditsPopUpComponent } from './app-navbar/credits-pop-up/credits-pop-up.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { AppFooterComponent } from './app-footer/app-footer.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +24,15 @@ import { ImageToTextComponent } from './app-main-page/image-to-text/image-to-tex
     SudokuComponent,
     SudokuGameComponent,
     TimerComponent,
-    ImageToTextComponent
+    ImageToTextComponent,
+    CreditsPopUpComponent,
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatDialogModule,
     RouterModule,
     HttpClientModule,
     AppRoutingModule

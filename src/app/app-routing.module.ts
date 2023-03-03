@@ -11,7 +11,8 @@ import {SudokuGameComponent} from "./app-main-page/sudoku-game/sudoku-game.compo
       { path: 'home', component: MainPageComponent },
       { path: 'Sudoku/Easy', component: SudokuGameComponent,data: {Level:"Easy"} },
       { path: 'Sudoku/Medium', component: SudokuGameComponent ,data: {Level:"Medium"}},
-      { path: 'Sudoku/Hard', component: SudokuGameComponent,data: {Level:"Hard"} }
+      { path: 'Sudoku/Hard', component: SudokuGameComponent,data: {Level:"Hard"} },
+      { path: '**', redirectTo: '/home' } // Wildcard route that redirects to the home page
     ])
   ],
   exports: [RouterModule]
