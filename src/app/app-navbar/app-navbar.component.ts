@@ -11,6 +11,7 @@ export class AppNavbarComponent {
   constructor(private modalService: BsModalService) {
   }
 
+  /** Open the modal when get the Temple was sent.*/
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
