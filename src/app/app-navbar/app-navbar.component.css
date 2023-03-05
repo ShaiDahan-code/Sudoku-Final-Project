@@ -19,3 +19,84 @@ nav a {
 nav a:hover {
   color: #555;
 }
+/* Base styles for the toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+/* Styles for the toggle switch label */
+.toggle-switch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 34px;
+  background-color: #d1d1d1;
+}
+
+/* Styles for the toggle switch inner */
+.toggle-switch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in-out;
+}
+
+.toggle-switch-inner:before,
+.toggle-switch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 34px;
+  padding: 0;
+  line-height: 34px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.toggle-switch-inner:before {
+  content: "ON";
+  padding-left: 10px;
+  background-color: #00b300;
+  color: white;
+}
+
+.toggle-switch-inner:after {
+  content: "OFF";
+  padding-right: 4px;
+  background-color: #d1d1d1;
+  color: #333;
+  text-align: right;
+}
+
+/* Styles for the toggle switch switch */
+.toggle-switch-switch {
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin: 4px;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 32px;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Styles for the toggle switch input when it is checked */
+.toggle-switch input:checked + .toggle-switch-label .toggle-switch-inner {
+  margin-left: 0;
+}
+
+.toggle-switch input:checked + .toggle-switch-label .toggle-switch-switch {
+  right: 4px;
+}

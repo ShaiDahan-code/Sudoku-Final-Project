@@ -1,6 +1,45 @@
-<input id="fileEvent" type="file" (change)="uploadImage($event)" (click)="chooseFileEvent()" >
-<p>{{ imageText }}</p>
+
 <div id="loading-clear">
   <div class="loading-icon"></div>
   <div class="loading-text">Loading...</div>
 </div>
+
+<button class="centerButton"(click)="openModal(settingsTemplate)" >Choose a file</button>
+
+<ng-template #settingsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Choose File</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <br/>
+      <div class="wrapper">
+        <div class="image">
+          <img id="boardImage" [src]="imageDataUrl" alt="">
+        </div>
+        <div class="content">
+          <div class="icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="text" >
+            No file chosen, yet!
+            <br/>
+            Choose Sudoku image!
+          </div>
+        </div>
+        <div id="cancel-btn">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="file-name">
+          File name here
+        </div>
+      </div>
+      <button (click)="defaultBtnActive()" (change)="uploadImage($event)" (click)="chooseFileEvent()" id="custom-btn">Choose a file</button>
+      <input id="fileEvent" type="file" (change)="uploadImage($event)" (click)="chooseFileEvent()" hidden>
+    </div>
+  </div>
+  <br/>      <br/>      <br/>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>

@@ -6,9 +6,11 @@
                         </svg></span><span style="font-size: 39px;">Home</span></a>
       <ul class="navbar-nav mx-auto">
         <li class="nav-item"></li>
-        <li class="nav-item"><a class="nav-link" href="#" style="font-size: 39px;">Settings</a></li>
         <li class="nav-item"></li>
-      </ul><a (click)="openModal(creditTemplate)" style="font-size: 40px;--bs-primary: #5b7293;--bs-primary-rgb: 91,114,147;">credits</a>
+        <li class="nav-item"></li>
+        <a (click)="openModal(settingsTemplate)" class="nav-link" style="font-size: 39px;">Settings</a>
+      </ul>
+      <a (click)="openModal(creditTemplate)" style="font-size: 40px;--bs-primary: #5b7293;--bs-primary-rgb: 91,114,147;">credits</a>
     </div>
   </div>
 </nav>
@@ -31,3 +33,34 @@
     <button type="button" class="btn btn-default" (click)="modalRef.hide()">Close</button>
   </div>
 </ng-template>
+
+<ng-template #settingsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Game Settings</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <h2>Settings</h2>
+    </div>
+    <ul>
+      Game Music
+      <li>
+        <label class="toggle-switch" style="width: 70px;">
+          <input (click)="toggleAudio()" type="checkbox" class="toggle-switch-input">
+          <span class="toggle-switch-label">
+            <span class="toggle-switch-inner"></span>
+            <span class="toggle-switch-switch"></span>
+          </span>
+        </label>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>
+
+<audio #myAudio controls loop hidden="">
+  <source src="http://www.sousound.com/music/healing/healing_01.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
