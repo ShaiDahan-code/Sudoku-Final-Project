@@ -10,7 +10,14 @@
     </div>
   </div>
   <app-sudoku [sudokuString]="boardString" [sudokuStringSolve]="boardStringSolve"></app-sudoku>
-  <br/>
-  <app-timer-component></app-timer-component>
 
+  <div class="main-game-info">
+    <app-timer-component></app-timer-component>
+  <div class="main-game-info-box hint-button" style="display: inherit;width: 120px;"  (mouseover)="hovering = true" (mouseout)="hovering = false">
+    <button style="border: none; ">
+      <span>Hint   </span>
+      <img [src]="hovering ? 'https://cdn-icons-png.flaticon.com/512/2910/2910890.png' : 'https://cdn-icons-png.flaticon.com/512/2313/2313792.png'" src="https://cdn-icons-png.flaticon.com/512/2313/2313792.png " alt="Hint Icon">
+    </button>
+  </div>
+  </div>
 </div>

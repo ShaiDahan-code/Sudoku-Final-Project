@@ -3,8 +3,16 @@
   <div class="loading-icon"></div>
   <div class="loading-text">Loading...</div>
 </div>
-
-<button class="centerButton"(click)="openModal(settingsTemplate)" >Choose a file</button>
+<div class="card-container">
+  <div class="card" style="width: 18rem; background: transparent">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Sudoku from Image</h5>
+      <p class="card-text">If you want load a sudoku table from image</p>
+      <button class="centerButton btn btn-primary" type="button" (click)="openModal(settingsTemplate)" >Choose a file</button>
+    </div>
+  </div>
+</div>
 
 <ng-template #settingsTemplate>
   <div class="modal-header">
@@ -15,7 +23,7 @@
       <br/>
       <div class="wrapper">
         <div class="image">
-          <img id="boardImage" [src]="imageDataUrl" alt="">
+          <img id="boardImage" [src]="imageDataUrl" alt="" style="object-fit: contain;">
         </div>
         <div class="content">
           <div class="icon">

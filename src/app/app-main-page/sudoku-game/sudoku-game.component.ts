@@ -18,6 +18,7 @@ DIFFICULT.set("Hard", 2);
 
 export class SudokuGameComponent implements OnInit{
   level:string = 'easy';
+  hovering: boolean = false;
   private rowSelected!: number;
 
   boardString!: string;
@@ -46,5 +47,6 @@ export class SudokuGameComponent implements OnInit{
     });
 
   }
+
 
 }

@@ -410,3 +410,24 @@ nav {
     height: 100vh;
   }
 }
+.hint-button {
+  color: #333;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.hint-button:hover {
+  color: #fff;
+}
+
+.hint-button img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.hint-button span {
+  font-weight: bold;
+}

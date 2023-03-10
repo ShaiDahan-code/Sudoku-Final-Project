@@ -157,3 +157,9 @@ html,body{
   cursor: pointer;
   background: linear-gradient(135deg,#3a8ffe 0%,#0a58ca 100%);
 }
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
