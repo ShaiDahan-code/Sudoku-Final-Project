@@ -5,11 +5,14 @@
   --color-txt: #000;
   --filled-color: #000;
   --filled-bg: #caf0f8;
+  --hint-cell: #494848;
 
   --white: #fff;
   --blue: #00aeef;
   --red: #e91e63;
   --black: #000;
+  --gray: #6a6a6a;
+  --green: #00e676;
 
   --nav-size: 70px;
   --sudoku-cell-size: 50px;
@@ -27,7 +30,7 @@
 .dark {
   --bg-main: #2a2a38;
   --bg-body: #1a1a2e;
-  --color-txt: #6a6a6a;
+    --color-txt: #6a6a6a;
   --filled-color: #4f4f63;
   --filled-bg: #000;
 }
@@ -453,3 +456,9 @@ nav {
   }
 }
 
+.bottom-modal-dialog {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -235,16 +235,7 @@ nav {
   gap: 10px;
 }
 
-.main-game-info-box {
-  height: 45px;
-  background-color: var(--bg-main);
-  color: var(--color-txt);
-  border-radius: var(--border-radius);
-  display: grid;
-  place-items: center;
-  padding: 0 20px;
-  font-size: var(--font-size);
-}
+
 
 .main-game-info-time {
   position: relative;
@@ -410,24 +401,5 @@ nav {
     height: 100vh;
   }
 }
-.hint-button {
-  color: #333;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 20px;
-  font-size: 16px;
-}
 
-.hint-button:hover {
-  color: #fff;
-}
 
-.hint-button img {
-  width: 20px;
-  margin-right: 10px;
-}
-
-.hint-button span {
-  font-weight: bold;
-}

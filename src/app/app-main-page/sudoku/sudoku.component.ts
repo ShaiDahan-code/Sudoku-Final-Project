@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {BsModalService} from "ngx-bootstrap/modal";
 
 
 export interface GridPosition {
@@ -19,16 +20,25 @@ export interface Cell{
   styleUrls: ['./sudoku.component.scss']
 })
 export class SudokuComponent {
+  constructor(private modalService: BsModalService) {
+  }
   grid!: Cell[][];
   selectedCell: GridPosition = {row: -1, col: -1};
   unvalidBoard: boolean = false;
+  hovering: boolean = false;
+
+  explainStage : number = 0;
+  hintRowAndCol : GridPosition = {row: -1, col: -1};
+  possibleNumber!: number;
 
   invalidCell: boolean = false;
 
   @Input() sudokuStringSolve !: string;
+  hintIsActive: boolean = false;
 
   @Input()
   set sudokuString(sudoku: string) {
+    console.log(sudoku);
     if (!sudoku) {
       this.unvalidBoard = true;
       return;
@@ -41,12 +51,33 @@ export class SudokuComponent {
       this.grid[i] = [];
       for (let j = 0; j < 9; j++) {
         this.grid[i][j] = {content: sudoku[i * 9 + j], editable: false, style: new Set([]), isBlock: false}
-        this.grid[i][j].editable = true ? this.grid[i][j].content == "0" : false;
+        this.grid[i][j].editable = this.grid[i][j].content == "0";
         if(!this.grid[i][j].editable){
           this.grid[i][j].style.add("filled");
         }
       }
     }
+    // this.grid = this.transposeGrid(this.grid);
+    console.log(this.grid);
+  }
+
+  transposeGrid(grid: Cell[][]): Cell[][] {
+    console.log(grid);
+    let transposedGrid: Cell[][] = [];
+    for (let i = 0; i < 9; i++) {
+      transposedGrid[i] = [];
+      for (let j = 0; j < 9; j++) {
+        // Create a deep copy of the cell object while transposing
+        transposedGrid[i][j] = {
+          content: grid[j][i].content,
+          editable: grid[j][i].editable,
+          style: new Set(grid[j][i].style),
+          isBlock: grid[j][i].isBlock
+        };
+      }
+    }
+    console.log(transposedGrid);
+    return transposedGrid;
   }
 
 
@@ -215,5 +246,126 @@ export class SudokuComponent {
   }
 
 
-}
+  /** Function to find the next move the user can do to continue solving the sudoku.*/
+  findNextMove() {
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (this.grid[row][col].content == "0") {
+          const possibleNumbers = this.getPossibleNumbers(row, col);
+          console.log([row, col, possibleNumbers]);
 
+          //In case the numbers on possibleNumbers are more than 1 then we got a 100% spot to put a number.
+          //In that case we need to give styles to the row, the col and the 3x3 square
+          if(possibleNumbers.length == 1){
+            this.hintIsActive = true;
+            this.displayToUserNextMove1(row,col);
+            return; //We found a move so we can stop the function
+          }
+        }
+      }
+    }
+  }
+
+  getPossibleNumbers(row: number, col: number){
+    let possibleNumbers: number[] = Array.from({ length: 9 }, (_, i) => i + 1);
+    for (let i = 0; i < 9; i++) {
+      if(this.grid[row][i].content != "0" && possibleNumbers.includes(parseInt(this.grid[row][i].content))) {
+        possibleNumbers = possibleNumbers.filter(num => (num !== parseInt(this.grid[row][i].content)));
+        this.grid[row][i].style.add("")
+      }
+      if(this.grid[i][col].content != "0" && possibleNumbers.includes(parseInt(this.grid[i][col].content))) {
+        possibleNumbers = possibleNumbers.filter(num => (num !== parseInt(this.grid[i][col].content)));
+      }
+    }
+    const rowStart = Math.floor(row / 3) * 3;
+    const colStart = Math.floor(col / 3) * 3;
+    for (let i = rowStart; i < rowStart + 3; i++) {
+      for (let j = colStart; j < colStart + 3; j++) {
+        if(this.grid[i][j].content != "0" && possibleNumbers.includes(parseInt(this.grid[i][j].content)))
+          possibleNumbers = possibleNumbers.filter(num => (num !== parseInt(this.grid[i][j].content)));
+      }
+    }
+    return possibleNumbers;
+  }
+
+  displayToUserNextMove1(row: number, col: number){
+    let possibleNumbers: number[] = Array.from({ length: 9 }, (_, i) => i + 1);
+    for (let i = 0; i < 9; i++) {
+      if(this.grid[row][i].content != "0" && possibleNumbers.includes(parseInt(this.grid[row][i].content))) {
+        possibleNumbers = possibleNumbers.filter(num => (num !== parseInt(this.grid[row][i].content)));
+        this.grid[row][i].style.add("nextMove1");
+      }
+      if(this.grid[i][col].content != "0" && possibleNumbers.includes(parseInt(this.grid[i][col].content))) {
+        possibleNumbers = possibleNumbers.filter(num => (num !== parseInt(this.grid[i][col].content)));
+        this.grid[i][col].style.add("nextMove1");
+
+      }
+    }
+    const rowStart = Math.floor(row / 3) * 3;
+    const colStart = Math.floor(col / 3) * 3;
+    for (let i = rowStart; i < rowStart + 3; i++) {
+      for (let j = colStart; j < colStart + 3; j++) {
+        if(this.grid[i][j].content != "0" && possibleNumbers.includes(parseInt(this.grid[i][j].content))) {
+          possibleNumbers = possibleNumbers.filter(num => (num !== parseInt(this.grid[i][j].content)));
+          this.grid[i][j].style.add("nextMove1");
+        }
+      }
+    }
+    this.grid[row][col].style.delete("nextMove1");
+    this.possibleNumber = possibleNumbers[0];
+    this.hintRowAndCol = {row: row, col: col};
+  }
+
+  goToNextExplain() {
+    this.explainStage++;
+    if(this.explainStage == 1){
+      this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].style.add("hintCell");
+      const rowStart = Math.floor(this.hintRowAndCol.row / 3) * 3;
+      const colStart = Math.floor(this.hintRowAndCol.col / 3) * 3;
+      for (let i = rowStart; i < rowStart + 3; i++) {
+        for (let j = colStart; j < colStart + 3; j++) {
+          this.grid[i][j].style.add("hintBlock");
+        }
+      }
+    }
+    if(this.explainStage == 2){
+      this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].content = this.possibleNumber.toString();
+    }
+    if(this.explainStage == 3){
+      this.hintIsActive = false;
+
+      //Remove all the styles
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          this.grid[i][j].style.delete("nextMove1");
+          this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].style.delete("hintCell");
+          this.grid[i][j].style.delete("hintBlock");
+        }
+      }
+      this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].style.add("filled");
+      this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].isBlock = true;
+      this.explainStage = 0;
+    }
+
+  }
+
+  goToBackExplain() {
+    if(this.explainStage == 0){
+      return;
+    }
+    this.explainStage--;
+    if(this.explainStage == 0){
+      this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].style.delete("hintCell");
+      const rowStart = Math.floor(this.hintRowAndCol.row / 3) * 3;
+      const colStart = Math.floor(this.hintRowAndCol.col / 3) * 3;
+      for (let i = rowStart; i < rowStart + 3; i++) {
+        for (let j = colStart; j < colStart + 3; j++) {
+          this.grid[i][j].style.delete("hintBlock");
+        }
+      }
+    }
+    if(this.explainStage == 1){
+      this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].content = "0";
+    }
+  }
+}

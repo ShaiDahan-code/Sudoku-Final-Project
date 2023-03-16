@@ -1,7 +1,7 @@
 <div class="">
   <div class="main-sudoku-grid">
     <tr *ngFor="let row of grid; let i=index ">
-      <td class="main-grid-cell" [class] ="getClasses(grid[i][j].style)" [style]="addStyle(i,j)" *ngFor="let cell of row;let j=index" (click)="selectCell(i,j)">{{ cell.content === '0' ? '' : cell.content }}</td>
+      <td class="main-grid-cell" [class]="getClasses(grid[j][i].style)" [style]="addStyle(i, j)" *ngFor="let cell of row; let j=index" (click)="selectCell(j, i)">{{ grid[j][i].content === '0' ? '' : grid[j][i].content }}</td>
     </tr>
   </div>
   <div *ngIf="displayOptions()" class="numbers">
@@ -9,5 +9,25 @@
       <div class="{{j === 0 ?'delete': ''}}">{{j === 0 ? 'X' : j }}</div>
     </div>
   </div>
-</div>
+  <div class="main-game-info-box hint-button" style="display: inherit;width: 120px;"  (mouseover)="hovering = true" (mouseout)="hovering = false">
+    <button style="border: none; " (click)="findNextMove()">
+      <span>Hint</span>
+      <img [src]="hovering ? 'https://cdn-icons-png.flaticon.com/512/2910/2910890.png' : 'https://cdn-icons-png.flaticon.com/512/2313/2313792.png'" src="https://cdn-icons-png.flaticon.com/512/2313/2313792.png " alt="Hint Icon">
+    </button>
+  </div>
 
+  <!-- Display to user the Hint Explanation -->
+  <div class="hint_container" *ngIf="hintIsActive">
+    <div class="title">Last Remaining Cell</div>
+    <hr />
+    <div class="description">
+      <div *ngIf="explainStage === 0"><p>Pay attention to <span style="color:green">these cells</span></p></div>
+      <div *ngIf="explainStage === 1"><p>In <span style="color: cornflowerblue"> this block</span>,
+        there is only one cell remaining that can contain the number {{this.possibleNumber}}</p></div>
+      <div *ngIf="explainStage === 2"><p>Since it is the only possible option, this cell must be {{this.possibleNumber}}</p></div>
+    </div>
+    <div class="btns-container">
+      <button class="btn back-btn" (click)="goToBackExplain()">< Back</button>
+      <button class="btn next-btn" (click)="goToNextExplain()">{{this.explainStage == 2 ? 'Apply' : 'Next'}} ></button>
+    </div>
+</div>

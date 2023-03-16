@@ -33,10 +33,10 @@ export class SudokuGameComponent implements OnInit{
     });
     //generate a random number between 0 and 2000
     this.rowSelected = Math.floor(Math.random() * 2000);
-    this.selecteRandomBoard();
+    this.selectRandomBoard();
   }
 
-  selecteRandomBoard() {
+  selectRandomBoard() {
     //read the file and get the string inside. the file is in path "../../../assets/MediumPuzzle.txt"
     let file = FILES_PUZZLE[DIFFICULT.get(this.level)!];
     this.httpClient.get("../../../assets/" + file, {responseType: 'text'}).subscribe((data) => {
@@ -47,6 +47,4 @@ export class SudokuGameComponent implements OnInit{
     });
 
   }
-
-
 }
