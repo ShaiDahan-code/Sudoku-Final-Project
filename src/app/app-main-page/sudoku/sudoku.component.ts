@@ -1,6 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {BsModalService} from "ngx-bootstrap/modal";
 
+type Coordinate = [number, number];
+export interface PossibleAnswer{
+  row:number;
+  col:number;
+  array:number[];
+}
 
 export interface GridPosition {
   row:number;
@@ -34,7 +40,7 @@ export class SudokuComponent {
   invalidCell: boolean = false;
 
   @Input() sudokuStringSolve !: string;
-  hintIsActive: boolean = false;
+  hintOneIsActive: boolean = false;
 
   @Input()
   set sudokuString(sudoku: string) {
@@ -248,25 +254,67 @@ export class SudokuComponent {
 
   /** Function to find the next move the user can do to continue solving the sudoku.*/
   findNextMove() {
+    let sudoku_PossibleNumbers : PossibleAnswer[] = [];
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         if (this.grid[row][col].content == "0") {
           const possibleNumbers = this.getPossibleNumbers(row, col);
+          sudoku_PossibleNumbers.push({row:row, col:col, array:possibleNumbers});
           console.log([row, col, possibleNumbers]);
 
           //In case the numbers on possibleNumbers are more than 1 then we got a 100% spot to put a number.
           //In that case we need to give styles to the row, the col and the 3x3 square
           if(possibleNumbers.length == 1){
-            this.hintIsActive = true;
+            this.hintOneIsActive = true;
             this.displayToUserNextMove1(row,col);
             return; //We found a move so we can stop the function
           }
         }
       }
     }
+
+    //In case we not find a 100% spot to put a number, we will try to remove more options from the possible numbers by Hint2.
+    let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
+    if(hint2PossibleAnswer.row != -1){
+      alert("Hint2 FOUND");
+      this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+    }
   }
 
-  getPossibleNumbers(row: number, col: number){
+  editPossibleNumbers(arr: PossibleAnswer[]) :PossibleAnswer {
+    for (let i = 0; i < arr.length; i++) {
+      let row = arr[i].row;
+      let col = arr[i].col;
+      let possibleNumbers = arr[i].array;
+      const rowStart = Math.floor(row / 3) * 3;
+      const colStart = Math.floor(col / 3) * 3;
+      for (let i = rowStart; i < rowStart + 3; i++) {
+        for (let j = colStart; j < colStart + 3; j++) {
+          if (this.grid[i][j].content === "0") {
+            if(i == row && j == col)//We don't want to remove the number from the same cell.
+              continue;
+            //find in arr the cell with the same row and col
+            let index = arr.findIndex(cell => cell.row == i && cell.col == j);
+            if(index != -1){
+              arr[index].array.forEach(num => {
+                if(possibleNumbers.includes(num))
+                  possibleNumbers = possibleNumbers.filter(number => (number !== num));
+              });
+            }
+            //In case the numbers on possibleNumbers is equal to 1 then we got a 100% spot to put a number.
+
+          }
+        }
+      }
+      if(possibleNumbers.length === 1){
+        return {row:row, col:col, array:possibleNumbers};
+      }
+    }
+    return {row:-1, col:-1, array:[]}
+  }
+
+  /** Return all the possible numbers of each cell. Get as input the row and col, and remove all the numbers in the row,col,and 3x3 square that can't be possible number.*/
+  getPossibleNumbers(row: number, col: number) : number[]{
     let possibleNumbers: number[] = Array.from({ length: 9 }, (_, i) => i + 1);
     for (let i = 0; i < 9; i++) {
       if(this.grid[row][i].content != "0" && possibleNumbers.includes(parseInt(this.grid[row][i].content))) {
@@ -288,6 +336,41 @@ export class SudokuComponent {
     return possibleNumbers;
   }
 
+  displayToUserNextMove2(row: number, col: number, possibleNumber: number){
+    this.hintOneIsActive = true;
+    const rowStart = Math.floor(row / 3) * 3;
+    const colStart = Math.floor(col / 3) * 3;
+    const adjacentCells: Coordinate[] = [];
+    // Check cells in the same row
+    for (let i = 0; i < 3; i++) {
+      if (i !== rowStart) {
+        adjacentCells.push([i*3, colStart]);
+      }
+    }
+
+    // Check cells in the same column
+    for (let j = 0; j < 3; j++) {
+      if (j !== colStart) {
+        adjacentCells.push([rowStart, j*3]);
+      }
+    }
+    //remove from adjacentCells the [rowStart, colStart]
+    adjacentCells.splice(adjacentCells.findIndex(cell => cell[0] == rowStart && cell[1] == colStart), 1);
+
+    //Move on all the spots that can influence the block we check, and mark all the numbers on those block that equal to possibleNumber.
+    adjacentCells.forEach(block => {
+      for(let i = block[0]; i < block[0]+3; i++){
+        for(let j = block[1]; j < block[1]+3; j++){
+          if(this.grid[i][j].content == possibleNumber.toString()){
+            this.grid[i][j].style.add("nextMove1");
+          }
+        }
+      }
+    });
+    this.possibleNumber = possibleNumber;
+    this.hintRowAndCol = {row: row, col: col};
+  }
+  /** After the user get the hint There are 3 steps to explained how it's working(Hint 1), will trigger the explanation process.*/
   displayToUserNextMove1(row: number, col: number){
     let possibleNumbers: number[] = Array.from({ length: 9 }, (_, i) => i + 1);
     for (let i = 0; i < 9; i++) {
@@ -316,6 +399,7 @@ export class SudokuComponent {
     this.hintRowAndCol = {row: row, col: col};
   }
 
+  /** After the user get the hint There are 3 steps to explained how it's working(Hint 1), this function is to go forward with the explanation.*/
   goToNextExplain() {
     this.explainStage++;
     if(this.explainStage == 1){
@@ -332,7 +416,7 @@ export class SudokuComponent {
       this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].content = this.possibleNumber.toString();
     }
     if(this.explainStage == 3){
-      this.hintIsActive = false;
+      this.hintOneIsActive = false;
 
       //Remove all the styles
       for (let i = 0; i < 9; i++) {
@@ -349,6 +433,7 @@ export class SudokuComponent {
 
   }
 
+  /** After the user get the hint There are 3 steps to explained how it's working(Hint 1), this function is to go back between the explanation.*/
   goToBackExplain() {
     if(this.explainStage == 0){
       return;
