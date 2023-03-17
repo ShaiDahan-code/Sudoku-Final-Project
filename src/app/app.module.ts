@@ -18,6 +18,8 @@ import {MatInputModule} from "@angular/material/input";
 import {BsDropdownConfig, BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {BsModalService, ModalModule} from "ngx-bootstrap/modal";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import { CongratsComponent } from './app-main-page/congrats/congrats.component';
+import { LoginRegisterSliderComponent } from './login-register-slider/login-register-slider.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
     SudokuGameComponent,
     TimerComponent,
     ImageToTextComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    CongratsComponent,
+    LoginRegisterSliderComponent
   ],
   imports: [
     BrowserModule,
