@@ -246,6 +246,7 @@ export class SudokuComponent {
         if (this.grid[row][col].content == "0") {
           const possibleNumbers = this.getPossibleNumbers(row, col);
           console.log([row, col, possibleNumbers]);
+          sudoku_PossibleNumbers.push({ row: row, col: col, array: possibleNumbers });
 
           if (possibleNumbers.length == 1) {
             this.hintOneIsActive = true;
