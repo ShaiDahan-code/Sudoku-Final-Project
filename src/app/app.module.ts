@@ -20,6 +20,8 @@ import {BsModalService, ModalModule} from "ngx-bootstrap/modal";
 import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 import { CongratsComponent } from './app-main-page/congrats/congrats.component';
 import { LoginRegisterSliderComponent } from './login-register-slider/login-register-slider.component';
+import {FormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,19 +36,21 @@ import { LoginRegisterSliderComponent } from './login-register-slider/login-regi
     CongratsComponent,
     LoginRegisterSliderComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatDialogModule,
-    RouterModule,
-    HttpClientModule,
-    AppRoutingModule,
-    MatInputModule,
-    BsDatepickerModule.forRoot(),
-    BsDropdownModule,
-    ModalModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatDialogModule,
+        RouterModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        MatInputModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule,
+        ModalModule,
+        FormsModule
+    ],
   providers: [BsDropdownConfig,BsModalService],
   bootstrap: [AppComponent]
 })

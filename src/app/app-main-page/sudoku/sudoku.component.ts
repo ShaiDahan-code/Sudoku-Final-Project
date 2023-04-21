@@ -260,7 +260,6 @@ export class SudokuComponent {
     //In case we not find a 100% spot to put a number, we will try to remove more options from the possible numbers by Hint2.
     let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
     if (hint2PossibleAnswer.row != -1) {
-      alert("Hint2 FOUND");
       this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
     }
   }
