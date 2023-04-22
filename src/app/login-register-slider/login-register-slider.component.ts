@@ -48,7 +48,7 @@ export class LoginRegisterSliderComponent {
     this.renderer.removeClass(this.el.nativeElement.querySelector('#container'), 'right-panel-active');
   }
 
-  createNewAccount(template: TemplateRef<any>) {
+  createNewAccount() {
     this.hasBeenSubmitted = true;
     if (this.registerForm.valid) {
       console.log(this.registerForm.value);
@@ -73,8 +73,5 @@ export class LoginRegisterSliderComponent {
       }
     }
 
-    if(this.emailError || this.passwordError || this.nameError) {
-      this.openModal(template);
-    }
   }
 }

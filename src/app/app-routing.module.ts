@@ -10,9 +10,9 @@ import {LoginRegisterSliderComponent} from "./login-register-slider/login-regist
     RouterModule.forRoot([
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: MainPageComponent },
-      { path: 'Sudoku/Easy', component: SudokuGameComponent,data: {Level:"Easy"} },
-      { path: 'Sudoku/Medium', component: SudokuGameComponent ,data: {Level:"Medium"}},
-      { path: 'Sudoku/Hard', component: SudokuGameComponent,data: {Level:"Hard"} },
+      { path: 'Sudoku/Easy', component: SudokuGameComponent,data: {Level:"easy"} },
+      { path: 'Sudoku/Medium', component: SudokuGameComponent ,data: {Level:"medium"}},
+      { path: 'Sudoku/Hard', component: SudokuGameComponent,data: {Level:"hard"} },
       { path: 'Login', component: LoginRegisterSliderComponent, },
       { path: '**', redirectTo: '/home' } // Wildcard route that redirects to the home page
     ])
