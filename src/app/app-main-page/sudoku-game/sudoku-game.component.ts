@@ -28,6 +28,7 @@ export class SudokuGameComponent implements OnInit{
       this.level = data['Level'];
     });
     this.easyPuzzle = await this.puzzleService.getPuzzle(this.level);
+    console.log(this.easyPuzzle);
     this.boardString = this.easyPuzzle["puzzle"].replaceAll('.','0');
   }
 

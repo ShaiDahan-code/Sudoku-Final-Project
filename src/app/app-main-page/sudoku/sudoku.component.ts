@@ -18,6 +18,7 @@ export interface Cell {
   editable: boolean;
   style: Set<string>;
   isBlock: boolean;
+  hints: string;
 }
 
 @Component({
@@ -27,6 +28,7 @@ export interface Cell {
 })
 export class SudokuComponent {
   gameEnded: boolean = false;
+  private HintsOn: any;
   constructor() {
   }
 
@@ -57,7 +59,7 @@ export class SudokuComponent {
     for (let i = 0; i < 9; i++) {
       this.grid[i] = [];
       for (let j = 0; j < 9; j++) {
-        this.grid[i][j] = {content: sudoku[i * 9 + j], editable: false, style: new Set([]), isBlock: false}
+        this.grid[i][j] = {content: sudoku[i * 9 + j], editable: false, style: new Set([]), isBlock: false,hints:""}
         this.grid[i][j].editable = this.grid[i][j].content == "0";
         if (!this.grid[i][j].editable) {
           this.grid[i][j].style.add("filled");
@@ -237,6 +239,19 @@ export class SudokuComponent {
     }
   }
 
+  printPossibaleNumberOnBoard(){
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if(!this.grid[row][col].style.has("filled")) {
+          const possibleNumbers = this.getPossibleNumbers(row, col);
+          console.log(possibleNumbers.toString().replaceAll(","," "));
+          this.grid[row][col].style.add("Hint3");
+          this.grid[row][col].hints = possibleNumbers.toString().replaceAll(","," ");
+          this.HintsOn = true;
+        }
+      }
+    }
+  }
 
   /** Function to find the next move the user can do to continue solving the sudoku.*/
   findNextMove() {
@@ -261,6 +276,9 @@ export class SudokuComponent {
     let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
     if (hint2PossibleAnswer.row != -1) {
       this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+    }
+    else{
+      this.printPossibaleNumberOnBoard();
     }
   }
 
@@ -446,5 +464,19 @@ export class SudokuComponent {
       }
     }
     return true;
+  }
+
+  getCellContentDisplayValue(j: number, i: number) {
+   if(this.HintsOn){
+     if(!this.grid[j][i].style.has("filled"))
+      return this.grid[j][i].hints;
+    }
+    if (this.grid[j][i].content === '0') {
+      return '';
+    }
+    else if (this.grid[j][i].content !== '0') {
+      return this.grid[j][i].content;
+    }
+    return ' '
   }
 }

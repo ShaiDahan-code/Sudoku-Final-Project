@@ -1,7 +1,7 @@
 <div class="" *ngIf="!gameEnded">
   <div class="main-sudoku-grid">
     <tr *ngFor="let row of grid; let i=index ">
-      <td class="main-grid-cell" [class]="getClasses(grid[j][i].style)" [style]="addStyle(i, j)" *ngFor="let cell of row; let j=index" (click)="selectCell(j, i)">{{ grid[j][i].content === '0' ? '' : grid[j][i].content }}</td>
+      <td class="main-grid-cell" [class]="getClasses(grid[j][i].style)" [style]="addStyle(i, j)" *ngFor="let cell of row; let j=index" (click)="selectCell(j, i)">{{ getCellContentDisplayValue(j,i) }}</td>
     </tr>
   </div>
   <div *ngIf="displayOptions()" class="numbers">
