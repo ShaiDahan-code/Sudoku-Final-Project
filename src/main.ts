@@ -12,7 +12,6 @@ function bootstrap() {
  if (document.readyState === 'complete') {
    bootstrap();
  } else {
-   document.addEventListener('DOMContentLoaded', () => {
-     platformBrowserDynamic().bootstrapModule(AppModule);
-   }); }
+   document.addEventListener('DOMContentLoaded', bootstrap);
+ }
 
