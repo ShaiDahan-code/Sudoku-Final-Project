@@ -1,6 +1,7 @@
 import {Component, Renderer2, ElementRef, TemplateRef} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
+import {HttpClient} from "@angular/common/http";
 
 function passwordStrengthValidator(control: AbstractControl): { [key: string]: boolean } | null {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -30,7 +31,8 @@ export class LoginRegisterSliderComponent {
   constructor(private renderer: Renderer2,
               private el: ElementRef,
               private fb: FormBuilder,
-              private modalService: BsModalService) {
+              private modalService: BsModalService,
+              private http: HttpClient) {
     this.registerForm = this.fb.group({
       registerName: ['', Validators.required],
       registerEmail: ['', [Validators.required, emailValidator]],
@@ -50,10 +52,18 @@ export class LoginRegisterSliderComponent {
 
   createNewAccount() {
     this.hasBeenSubmitted = true;
-    if (this.registerForm.valid) {
+    if (!this.registerForm.get('registerPassword')?.hasError('passwordWeak') &&
+        !this.registerForm.get('registerEmail')?.hasError('invalidEmail') &&
+        this.registerForm.get('registerName')?.value
+    ) {
       console.log(this.registerForm.value);
       this.passwordError = null;
       this.emailError = null;
+      // Send a POST request to the server with the form data
+      this.http.post('/api/data', this.registerForm.value).subscribe(response => {
+
+        console.log(response);
+      });
     } else {
       if (this.registerForm.get('registerPassword')?.hasError('passwordWeak')) {
         this.passwordError = 'Password should have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character.';
@@ -72,6 +82,7 @@ export class LoginRegisterSliderComponent {
         this.nameError = null;
       }
     }
+
 
   }
 }

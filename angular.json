@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sudoku-final-project",
+            "outputPath": "dist/Sudoku-Final-Project/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -91,6 +91,59 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/Sudoku-Final-Project/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "Sudoku-Final-Project:build:development",
+              "serverTarget": "Sudoku-Final-Project:server:development"
+            },
+            "production": {
+              "browserTarget": "Sudoku-Final-Project:build:production",
+              "serverTarget": "Sudoku-Final-Project:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "Sudoku-Final-Project:build:production",
+              "serverTarget": "Sudoku-Final-Project:server:production"
+            },
+            "development": {
+              "browserTarget": "Sudoku-Final-Project:build:development",
+              "serverTarget": "Sudoku-Final-Project:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

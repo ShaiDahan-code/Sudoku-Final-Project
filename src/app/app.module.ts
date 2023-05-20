@@ -22,8 +22,8 @@ import { CongratsComponent } from './app-main-page/congrats/congrats.component';
 import { LoginRegisterSliderComponent } from './login-register-slider/login-register-slider.component';
 import {FormsModule} from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
-
 @NgModule({
+
   declarations: [
     AppComponent,
     MainPageComponent,
@@ -37,7 +37,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginRegisterSliderComponent
   ],
     imports: [
-        BrowserModule,
+        BrowserModule.withServerTransition({ appId: 'serverApp' }),
         BrowserAnimationsModule,
         MatButtonModule,
         MatDialogModule,
@@ -51,7 +51,9 @@ import { ReactiveFormsModule } from '@angular/forms';
         ModalModule,
         FormsModule
     ],
-  providers: [BsDropdownConfig,BsModalService],
+  providers: [
+    BsDropdownConfig,
+    BsModalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
