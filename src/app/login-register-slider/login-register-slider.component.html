@@ -36,26 +36,22 @@
 
   <!-- Login form-->
   <div class="form-container login-container">
-    <form action="#">
+    <form action="#" [formGroup]="loginForm" (ngSubmit)="Login()">
       <h1>Login hire.</h1>
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password">
+      <input type="email" placeholder="Email" formControlName="loginEmail"
+             [ngClass]="{'error': registerForm.get('registerEmail')?.hasError('invalidEmail') && loginHasBeenSubmitted}">
+
+      <li style="font-size: 10px; color: red;" *ngIf="loginEmailError">- {{loginEmailError}}</li>
+      <input type="password" placeholder="Password" formControlName="loginPassword"
+             [ngClass]="{'error': this.registerForm.get('registerPassword')?.hasError('passwordWeak') && loginHasBeenSubmitted}">
+      <li style="font-size: 10px; color: red;" *ngIf="loginPasswordError">- {{loginPasswordError}} </li>
       <div class="content">
         <div class="checkbox">
           <input type="checkbox" name="checkbox" id="checkbox">
           <label>Remember me</label>
         </div>
-<!--        <div class="pass-link">-->
-<!--          <a href="#">Forgot password?</a>-->
-<!--        </div>-->
       </div>
-      <button>Login</button>
-<!--      <span>or use your account</span>-->
-<!--      <div class="social-container">-->
-<!--        <a href="#" class="social"><i class="lni lni-facebook-fill"></i></a>-->
-<!--        <a href="#" class="social"><i class="lni lni-google"></i></a>-->
-<!--        <a href="#" class="social"><i class="lni lni-linkedin-original"></i></a>-->
-<!--      </div>-->
+      <button type="submit">Login</button>
     </form>
   </div>
 

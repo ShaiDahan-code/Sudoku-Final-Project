@@ -2,7 +2,8 @@ import {Component, Renderer2, ElementRef, TemplateRef, OnInit} from '@angular/co
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {HttpClient} from "@angular/common/http";
-import {UserService} from "../../user-service.service";
+import {UserService} from "../services/user-service.service";
+import { Router } from '@angular/router';
 
 function passwordStrengthValidator(control: AbstractControl): { [key: string]: boolean } | null {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -24,11 +25,15 @@ function emailValidator(control: AbstractControl): { [key: string]: boolean } | 
 export class LoginRegisterSliderComponent {
   /** Private fields*/
   registerForm: FormGroup;
+  loginForm: FormGroup;
   passwordError: string | null = null;
+  loginPasswordError: string | null = null;
   registerCompleted: string | null = null;
   emailError: string | null = null;
+  loginEmailError: string | null = null;
   nameError: string | null = null;
   hasBeenSubmitted = false;
+  loginHasBeenSubmitted = false;
   modalRef!: BsModalRef;
   users :any[]= []
 
@@ -37,12 +42,17 @@ export class LoginRegisterSliderComponent {
               private fb: FormBuilder,
               private modalService: BsModalService,
               private http: HttpClient,
-              private userService: UserService) {
+              private userService: UserService,
+              private router: Router) {
     this.registerForm = this.fb.group({
       registerName: ['', Validators.required],
       registerEmail: ['', [Validators.required, emailValidator]],
       registerPassword: ['', [Validators.required, passwordStrengthValidator]],
     });
+    this.loginForm = this.fb.group({
+      loginEmail: ['', [Validators.required, emailValidator]],
+      loginPassword: ['', Validators.required]
+    })
   }
 
 
@@ -106,5 +116,44 @@ export class LoginRegisterSliderComponent {
         this.nameError = null;
       }
     }
+  }
+
+  Login() {
+    this.loginHasBeenSubmitted = true;
+    // Reset error messages
+    this.loginEmailError = null;
+    this.loginPasswordError = null;
+
+    if(this.loginForm.get('loginEmail')?.hasError('invalidEmail')) {
+      this.loginEmailError = 'Please enter a valid email address.';
+      return;
+    }
+    else if(this.loginForm.get('loginPassword')?.hasError('required')) {
+      this.loginPasswordError = 'Please enter your password.';
+      return;
+    }
+
+    // Send a POST request to the server with the login data
+    this.http.post('/api/login', this.loginForm.value).subscribe(
+      response => {
+        // Login was successful, handle response here
+        console.log(response);
+        this.loginForm.reset();
+        // @ts-ignore
+        let user_name = response['user_name'] as string;
+        this.userService.loginStatus(true, user_name);
+        this.loginHasBeenSubmitted = false;
+        this.router.navigate(['/home']); // redirect to home page
+
+      },
+      error => {
+        // Handle error here
+        if (error.error.message === 'User does not exist.') {
+          this.loginEmailError = 'No account found with this email address.';
+        } else if (error.error.message === 'Incorrect password.') {
+          this.loginPasswordError = 'Incorrect password.';
+        }
+      }
+    );
   }
 }

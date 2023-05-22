@@ -7,12 +7,26 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class UserService {
+  isLogin = false;
+  currentUser: string | null = null; // to store current user info
+
   constructor(private http: HttpClient) { }
 
   registerUser(data: any): Observable<any> {
     return this.http.post('/api/data', data).pipe(
       catchError(this.handleError)
     );
+  }
+
+  loginUser(data: any): Observable<any> {
+    return this.http.post('/api/login', data).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  loginStatus(value: boolean, user: string | null) {
+    this.isLogin = value;
+    this.currentUser = user; // store the current logged-in user
   }
 
   private handleError(error: any) {

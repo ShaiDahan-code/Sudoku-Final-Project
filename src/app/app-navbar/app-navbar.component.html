@@ -14,7 +14,15 @@
 
     </div>
   </div>
-  <a href="/Login" style="font-size: 20px;--bs-primary: #5b7293;--bs-primary-rgb: 91,114,147;">Login</a>
+  <!-- If the user is logged in, display user name and logout button -->
+  <div *ngIf="userService.isLogin">
+    User: {{ userService.currentUser }}
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <!-- If the user is not logged in, display the login button -->
+  <a *ngIf="!userService.isLogin" href="/Login" style="font-size: 20px;--bs-primary: #5b7293;--bs-primary-rgb: 91,114,147;">Login</a>
+
 </nav>
 
 <!-- Open The Modal for the credit-->

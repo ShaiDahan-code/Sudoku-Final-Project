@@ -44,6 +44,26 @@ export function app(): express.Express {
     res.status(200).send(userList);
   });
 
+  // Login user
+  server.post('/api/login', async (req, res) => {
+    const { loginEmail, loginPassword } = req.body;
+    const Users = db.collection('Users');
+
+    const user = await Users.findOne({ user_email: loginEmail.toLowerCase() });
+    if (user) {
+      if (user['user_password'] === loginPassword) {
+        // If user exists and password is correct, send user details
+        res.status(200).send(user);
+      } else {
+        // If password is incorrect, send an error message
+        res.status(400).send({ message: 'Incorrect password.' });
+      }
+    } else {
+      // If user does not exist, send an error message
+      res.status(400).send({ message: 'User does not exist.' });
+    }
+  });
+
 // Add new user
   server.post('/api/data', async (req, res) => {
     const data = req.body;
