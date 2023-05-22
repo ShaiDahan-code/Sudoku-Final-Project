@@ -8,6 +8,19 @@ import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
 import {json} from "express";
+import {Db, MongoClient} from "mongodb";
+
+
+let db: Db;
+
+async function startDatabase() {
+  const client = new MongoClient('mongodb+srv://vinox1924:ttE94R3hFW8LomGA@sudoku.dcwoe3h.mongodb.net/?retryWrites=true&w=majority');
+  await client.connect();
+  console.log('Connected to database');
+  db = client.db('Sudoku');
+}
+
+
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -24,15 +37,37 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', distFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.post('/api/data', (req, res) => {
-    console.log(req.body);
+// Fetch all users
+  server.get('/api/users', async (req, res) => {
+    const Users = db.collection('Users');
+    const userList = await Users.find().toArray();
+    res.status(200).send(userList);
+  });
+
+// Add new user
+  server.post('/api/data', async (req, res) => {
     const data = req.body;
-    // Do something with the data
-    console.log(data);
-    res.status(200).send({ message: 'Data received!' });
+    const Users = db.collection('Users');
+
+    // Check if user already exists in the database
+    const existingUser = await Users.findOne({ user_email: data.registerEmail.toLowerCase() });
+
+    if (existingUser) {
+      // If user exists, send a response and do not insert the new user
+      res.status(400).send({ message: 'User already exists!' });
+    } else {
+      // If user does not exist, insert the new user
+      const newUser = {
+        user_password: data.registerPassword,
+        user_email: data.registerEmail.toLowerCase(),
+        user_name: data.registerName
+      };
+      await Users.insertOne(newUser);
+
+      // Fetch updated user list and send it as response
+      const userList = await Users.find().toArray();
+      res.status(200).send(userList);
+    }
   });
 
   server.get('*.*', express.static(distFolder, {
@@ -49,6 +84,8 @@ export function app(): express.Express {
 
 function run(): void {
   const port = process.env['PORT'] || 4000;
+
+  startDatabase().catch(console.error);
 
   // Start up the Node server
   const server = app();

@@ -1,34 +1,40 @@
 
 <div class="container" id="container" style="height: 600px;">
 
+  <!-- Register form-->
   <div class="form-container register-container">
-    <form [formGroup]="registerForm" (ngSubmit)="createNewAccount()">
+    <form [formGroup]="registerForm" (ngSubmit)="createNewAccount()" >
       <h1>Register hire.</h1>
       <input
         type="text"
         placeholder="Name"
+        (blur)="registerCompleted = null"
         formControlName="registerName"
-        [ngClass]="{'error': registerForm.get('registerName')?.invalid && hasBeenSubmitted}"
+        [ngClass]="{'error': registerForm.get('registerName')?.invalid && hasBeenSubmitted && !registerCompleted}"
       >
       <li style="font-size: 10px; color: red;" *ngIf="nameError">- {{nameError}}</li>
       <input
         type="email"
         placeholder="Email"
+        (blur)="registerCompleted = null"
         formControlName="registerEmail"
-        [ngClass]="{'error': registerForm.get('registerEmail')?.hasError('invalidEmail') && hasBeenSubmitted}"
+        [ngClass]="{'error': registerForm.get('registerEmail')?.hasError('invalidEmail') && hasBeenSubmitted && !registerCompleted}"
       >
       <li style="font-size: 10px; color: red;" *ngIf="emailError">- {{emailError}}</li>
       <input
         type="password"
         placeholder="Password"
+        (blur)="registerCompleted = null"
         formControlName="registerPassword"
-        [ngClass]="{'error': this.registerForm.get('registerPassword')?.hasError('passwordWeak') && hasBeenSubmitted}"
+        [ngClass]="{'error': this.registerForm.get('registerPassword')?.hasError('passwordWeak') && hasBeenSubmitted && !registerCompleted}"
       >
       <li style="font-size: 10px; color: red;" *ngIf="passwordError">- {{passwordError}} </li>
       <button type="submit">Register</button>
+      <li style="font-size: 15px; color: darkgreen;" *ngIf="registerCompleted">{{registerCompleted}}</li>
     </form>
   </div>
 
+  <!-- Login form-->
   <div class="form-container login-container">
     <form action="#">
       <h1>Login hire.</h1>
@@ -39,17 +45,17 @@
           <input type="checkbox" name="checkbox" id="checkbox">
           <label>Remember me</label>
         </div>
-        <div class="pass-link">
-          <a href="#">Forgot password?</a>
-        </div>
+<!--        <div class="pass-link">-->
+<!--          <a href="#">Forgot password?</a>-->
+<!--        </div>-->
       </div>
       <button>Login</button>
-      <span>or use your account</span>
-      <div class="social-container">
-        <a href="#" class="social"><i class="lni lni-facebook-fill"></i></a>
-        <a href="#" class="social"><i class="lni lni-google"></i></a>
-        <a href="#" class="social"><i class="lni lni-linkedin-original"></i></a>
-      </div>
+<!--      <span>or use your account</span>-->
+<!--      <div class="social-container">-->
+<!--        <a href="#" class="social"><i class="lni lni-facebook-fill"></i></a>-->
+<!--        <a href="#" class="social"><i class="lni lni-google"></i></a>-->
+<!--        <a href="#" class="social"><i class="lni lni-linkedin-original"></i></a>-->
+<!--      </div>-->
     </form>
   </div>
 
@@ -73,23 +79,3 @@
   </div>
 
 </div>
-
-<!--<ng-template #RegisterErrorsTemplate>-->
-<!--  <div class="modal-header">-->
-<!--    <h4 class="modal-title pull-left">Errors When Register</h4>-->
-<!--  </div>-->
-<!--  <div class="modal-body">-->
-<!--    <div class="container">-->
-<!--      <ul>-->
-<!--        <li *ngIf="emailError">- {{emailError}}</li>-->
-<!--        <li *ngIf="passwordError">- {{passwordError}}</li>-->
-<!--        <li *ngIf="nameError">- {{nameError}}</li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="modal-footer">-->
-<!--    <button type="button" class="btn btn-default" (click)="modalRef.hide()">Close</button>-->
-<!--  </div>-->
-<!--</ng-template>-->
-
-
