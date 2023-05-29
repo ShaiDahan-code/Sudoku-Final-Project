@@ -282,50 +282,161 @@ export class SudokuComponent {
       }
     }
 
+    //In case we not find a 100% spot to put a number, we will try to remove more options from the possible numbers by Hint2.
+    let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
+    this.changeto2d(sudoku_PossibleNumbers)
 
-  //In case we not find a 100% spot to put a number, we will try to remove more options from the possible numbers by Hint2.
-  let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
-  if (hint2PossibleAnswer.row != -1) {
-    this.hintIsActive = true;
-    this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+    if (hint2PossibleAnswer.row != -1) {
+      this.hintIsActive = true;
+      this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+    }
+    else if (this.LockedCandidatesRows(sudoku_PossibleNumbers) == 1){
+      this.printPossibaleNumberOnBoard();
+      console.log("Option 1 Work!");
+      this.printPossibaleNumberOnBoard();
+    }
+    else if (this.LockedCandidatesCols(sudoku_PossibleNumbers) == 1){
+      this.printPossibaleNumberOnBoard();
+      this.printPossibaleNumberOnBoard();
+    }
+    else{
+      this.LockedCandidatesCols(sudoku_PossibleNumbers)
+      alert("There is no Posible moves!")
+      this.printPossibaleNumberOnBoard();
+    }
+
   }
-  else{
+  changeto1d(arr: number[][][]): PossibleAnswer[] {
+    let result: PossibleAnswer[] = [];
+
+    for (let row = 0; row < arr.length; row++) {
+      for (let col = 0; col < arr[row].length; col++) {
+        if (!arr[row][col].every(value => value === -1)) { // Add this condition
+          result.push({
+            row: row,
+            col: col,
+            array: arr[row][col]
+          });
+        }
+      }
+    }
+
+    return result;
+  }
+
+  changeto2d(arr: PossibleAnswer[]): number[][][] {
+    // find the maximum row and col in the array to determine the size of the 2D array
+    let maxRow = 0, maxCol = 0;
+    for (let answer of arr) {
+      maxRow = Math.max(maxRow, answer.row);
+      maxCol = Math.max(maxCol, answer.col);
+    }
+
+    // create a 2D array with default value [-1] for each cell
+    let result: number[][][] = Array(maxRow + 1).fill(0).map(() => Array(maxCol + 1).fill(0).map(() => [-1]));
+
+    // populate the 2D array with the values from the arr array
+    for (let answer of arr) {
+      result[answer.row][answer.col] = answer.array;
+    }
+
+    return result;
+  }
+  intersect(arr1: any[], arr2: any[]): any[] {
+    return arr1.filter(value => arr2.includes(value));
+  }
+  union(arr1: any[], arr2: any[]): any[] {
+    let set = new Set([...arr1, ...arr2]);
+    return Array.from(set);
+  }
+  LockedCandidatesRows(arr: PossibleAnswer[]): any {
+    let arr2d = this.changeto2d(arr);
     this.printPossibaleNumberOnBoard();
-    this.editPossibleNumbersBoard();
-  }
-
-  }
-  editPossibleNumbersBoard(){
-    let rowArray: number[] = [];
-    this.sudoku_PossibleNumbers_RightNow.forEach(possibleAnswers=>{
-
-      const rowStart = Math.floor(possibleAnswers.row / 3) * 3;
-      const colStart = Math.floor(possibleAnswers.col / 3) * 3;
-      possibleAnswers.array.forEach(number=>{
-        for (let i = rowStart; i < rowStart + 3; i++) {
-          for (let j = colStart; j < colStart + 3; j++) {
-
+    for (let i=0; i<9;i++){
+      for (let j=0; j<3;j++){
+        arr2d = this.changeto2d(arr);
+        let pos_num = this.union(arr2d[i][j*3],arr2d[i][j*3+1]);
+        pos_num = this.union(pos_num,arr2d[i][j*3+2]);
+        pos_num = pos_num.filter(value => value != -1);
+        let num_to_delete: number[] = [];
+        const rowStart = Math.floor(i / 3) * 3;
+        const colStart = Math.floor(j*3 / 3) * 3;
+        let num_to_check = [];
+        for(let n = rowStart;n< rowStart+3;n++){
+          for(let m = colStart;m< colStart+3;m++){
+            if(n == i)
+              continue;
+            num_to_check = this.union(num_to_check,arr2d[n][m]);
           }
         }
-      });
-
-    });
-
-
-    //
-    // for(let row =0; row<9; row++){
-    //   const rowStart = Math.floor(row / 3) * 3;
-    //   const colStart = 0;
-    //   console.log("rowStart: "+rowStart+" colStart: "+colStart);
-    //
-    //
-    // }
-    // for(let col =0; col<9; col++){
-    //
-    // }
-
+        for(let k = 0; k<pos_num.length;k++){
+          if(this.intersect([pos_num[k]],num_to_check).length == 0){
+            num_to_delete.push(pos_num[k]);
+          }
+        }
+        if(num_to_delete.length > 0){
+          for(let t = 0;t<9;t++){
+            if(t==j*3 || t==j*3+1 || t ==j*3+2)
+              continue;
+            arr2d[i][t] = arr2d[i][t].filter(value => !num_to_delete.includes(value));
+          }
+          let option_to_solve = this.changeto1d(arr2d);
+          let hint2PossibleAnswer = this.editPossibleNumbers(option_to_solve);
+          if (hint2PossibleAnswer.row != -1) {
+            this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+            return 1;
+          }
+        }
+        num_to_delete = [];
+      }
+    }
+    return 0;
   }
-  /** Function to search for Naked Single*/
+  LockedCandidatesCols(arr: PossibleAnswer[]): number{
+    this.printPossibaleNumberOnBoard();
+    let arr2d = this.changeto2d(arr);
+    for (let i=0; i<9;i++){
+      for (let j=0; j<3;j++){
+        arr2d = this.changeto2d(arr);
+        let pos_num = this.union(arr2d[j*3][i],arr2d[j*3+1][i]);
+        pos_num = this.union(pos_num,arr2d[j*3+2][i]);
+        pos_num = pos_num.filter(value => value != -1);
+        let num_to_delete: number[] = [];
+        const rowStart = Math.floor(i / 3) * 3;
+        const colStart = Math.floor(j*3 / 3) * 3;
+        let num_to_check = [];
+        for(let n = rowStart;n< rowStart+3;n++){
+          for(let m = colStart;m< colStart+3;m++){
+            if(n == i)
+              continue;
+            num_to_check = this.union(num_to_check,arr2d[m][n]);
+          }
+        }
+        for(let k = 0; k<pos_num.length;k++){
+          if(this.intersect([pos_num[k]],num_to_check).length == 0){
+            num_to_delete.push(pos_num[k]);
+          }
+        }
+        if(num_to_delete.length > 0){
+          for(let t = 0;t<9;t++){
+            if(t==i*3 || t==i*3+1 || t ==i*3+2)
+              continue;
+            arr2d[t][i] = arr2d[t][i].filter(value => !num_to_delete.includes(value));
+          }
+          let option_to_solve = this.changeto1d(arr2d);
+          let hint2PossibleAnswer = this.editPossibleNumbers(option_to_solve);
+          if (hint2PossibleAnswer.row != -1) {
+            this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+            return 1;
+          }
+        }
+        num_to_delete = [];
+      }
+    }
+    console.log("Didnt found!!!!!!!!!!!!!!!!");
+    return 0;
+  }
+
   editPossibleNumbers(arr: PossibleAnswer[]): PossibleAnswer {
     for (let i = 0; i < arr.length; i++) {
       let row = arr[i].row;
@@ -511,9 +622,9 @@ export class SudokuComponent {
   }
 
   getCellContentDisplayValue(j: number, i: number) {
-   if(this.HintsOn){
-     if(!this.grid[j][i].style.has("filled"))
-      return this.grid[j][i].hints;
+    if(this.HintsOn){
+      if(!this.grid[j][i].style.has("filled"))
+        return this.grid[j][i].hints;
     }
     if (this.grid[j][i].content === '0') {
       return '';
