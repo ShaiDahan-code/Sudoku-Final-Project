@@ -17,7 +17,7 @@
   </div>
 
   <!-- Display to user the Hint Explanation -->
-  <div class="hint_container" *ngIf="hintOneIsActive">
+  <div class="hint_container" *ngIf="hintIsActive">
     <div class="title">Last Remaining Cell</div>
     <hr />
     <div class="description">
@@ -27,7 +27,7 @@
       <div *ngIf="explainStage === 2"><p>Since it is the only possible option, this cell must be {{this.possibleNumber}}</p></div>
     </div>
     <div class="btns-container">
-      <button class="btn back-btn" (click)="goToBackExplain()">< Back</button>
+      <button class="btn back-btn" *ngIf="this.explainStage > 0" (click)="goToBackExplain()">< Back</button>
       <button class="btn next-btn" (click)="goToNextExplain()">{{this.explainStage == 2 ? 'Apply' : 'Next'}} ></button>
     </div>
   </div>

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {PuzzleService} from "./puzzle-service";
+import {UserService} from "../../services/user-service.service";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class SudokuGameComponent implements OnInit{
   boardString!: string;
   boardStringSolve!: string;
   private easyPuzzle: any;
-  constructor(private route: ActivatedRoute,private httpClient: HttpClient,private puzzleService: PuzzleService){
+  constructor(private route: ActivatedRoute,private httpClient: HttpClient,private puzzleService: PuzzleService, public userService: UserService){
 
   }
 

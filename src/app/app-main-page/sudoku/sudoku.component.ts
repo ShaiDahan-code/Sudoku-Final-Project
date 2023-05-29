@@ -43,7 +43,7 @@ export class SudokuComponent {
 
 
   @Input() sudokuStringSolve !: string;
-  hintOneIsActive: boolean = false;
+  hintIsActive: boolean = false;
 
   @Input()
   set sudokuString(sudoku: string) {
@@ -72,6 +72,7 @@ export class SudokuComponent {
 
 
   selectCell(row: number, col: number) {
+    if(this.hintIsActive) return;
     if (!this.grid[row][col].editable || this.grid[row][col].isBlock) {
       this.selectedCell.row = -1;
       this.selectedCell.col = -1;
@@ -95,6 +96,7 @@ export class SudokuComponent {
   }
 
   selectedNumber(numberSelected: number) {
+    if(this.hintIsOn) return;
     this.grid[this.selectedCell.row][this.selectedCell.col].content = numberSelected.toString();
     this.checkForValidation(this.selectedCell.row, this.selectedCell.col, numberSelected);
     console.log(this.grid);
@@ -243,7 +245,7 @@ export class SudokuComponent {
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         if(!this.grid[row][col].style.has("filled")) {
-          const possibleNumbers = this.getPossibleNumbers(row, col);
+          const possibleNumbers = this.sudoku_PossibleNumbers_RightNow.find(x => x.row == row && x.col == col)?.array as number[];
           console.log(possibleNumbers.toString().replaceAll(","," "));
           this.grid[row][col].style.add("Hint3");
           this.grid[row][col].hints = possibleNumbers.toString().replaceAll(","," ");
@@ -252,19 +254,27 @@ export class SudokuComponent {
       }
     }
   }
-
+  sudoku_PossibleNumbers_RightNow: PossibleAnswer[] = [];
+  hintIsOn: boolean = false;
   /** Function to find the next move the user can do to continue solving the sudoku.*/
   findNextMove() {
+    this.sudoku_PossibleNumbers_RightNow = [];
+    if(this.selectedCell.row != -1 && this.selectedCell.col != -1){
+      this.deleteSelectedCell();
+      this.selectedCell.row = -1;
+      this.selectedCell.col = -1;
+    }
     let sudoku_PossibleNumbers: PossibleAnswer[] = [];
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         if (this.grid[row][col].content == "0") {
           const possibleNumbers = this.getPossibleNumbers(row, col);
           console.log([row, col, possibleNumbers]);
-          sudoku_PossibleNumbers.push({ row: row, col: col, array: possibleNumbers });
+          sudoku_PossibleNumbers.push({row: row, col: col, array: possibleNumbers});
+          this.sudoku_PossibleNumbers_RightNow.push({row: row, col: col, array: possibleNumbers});
 
           if (possibleNumbers.length == 1) {
-            this.hintOneIsActive = true;
+            this.hintIsActive = true;
             this.displayToUserNextMove1(row, col);
             return; //We found a move so we can stop the function
           }
@@ -272,16 +282,50 @@ export class SudokuComponent {
       }
     }
 
-    //In case we not find a 100% spot to put a number, we will try to remove more options from the possible numbers by Hint2.
-    let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
-    if (hint2PossibleAnswer.row != -1) {
-      this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
-    }
-    else{
-      this.printPossibaleNumberOnBoard();
-    }
+
+  //In case we not find a 100% spot to put a number, we will try to remove more options from the possible numbers by Hint2.
+  let hint2PossibleAnswer = this.editPossibleNumbers(sudoku_PossibleNumbers);
+  if (hint2PossibleAnswer.row != -1) {
+    this.hintIsActive = true;
+    this.displayToUserNextMove2(hint2PossibleAnswer.row, hint2PossibleAnswer.col, hint2PossibleAnswer.array[0]);
+  }
+  else{
+    this.printPossibaleNumberOnBoard();
+    this.editPossibleNumbersBoard();
   }
 
+  }
+  editPossibleNumbersBoard(){
+    let rowArray: number[] = [];
+    this.sudoku_PossibleNumbers_RightNow.forEach(possibleAnswers=>{
+
+      const rowStart = Math.floor(possibleAnswers.row / 3) * 3;
+      const colStart = Math.floor(possibleAnswers.col / 3) * 3;
+      possibleAnswers.array.forEach(number=>{
+        for (let i = rowStart; i < rowStart + 3; i++) {
+          for (let j = colStart; j < colStart + 3; j++) {
+
+          }
+        }
+      });
+
+    });
+
+
+    //
+    // for(let row =0; row<9; row++){
+    //   const rowStart = Math.floor(row / 3) * 3;
+    //   const colStart = 0;
+    //   console.log("rowStart: "+rowStart+" colStart: "+colStart);
+    //
+    //
+    // }
+    // for(let col =0; col<9; col++){
+    //
+    // }
+
+  }
+  /** Function to search for Naked Single*/
   editPossibleNumbers(arr: PossibleAnswer[]): PossibleAnswer {
     for (let i = 0; i < arr.length; i++) {
       let row = arr[i].row;
@@ -338,7 +382,7 @@ export class SudokuComponent {
   }
 
   displayToUserNextMove2(row: number, col: number, possibleNumber: number) {
-    this.hintOneIsActive = true;
+    this.hintIsActive = true;
     const rowStart = Math.floor(row / 3) * 3;
     const colStart = Math.floor(col / 3) * 3;
     const adjacentCells: Coordinate[] = [];
@@ -418,7 +462,7 @@ export class SudokuComponent {
       this.grid[this.hintRowAndCol.row][this.hintRowAndCol.col].content = this.possibleNumber.toString();
     }
     if (this.explainStage == 3) {
-      this.hintOneIsActive = false;
+      this.hintIsActive = false;
 
       //Remove all the styles
       for (let i = 0; i < 9; i++) {
