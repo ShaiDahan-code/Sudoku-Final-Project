@@ -47,7 +47,6 @@ export class SudokuComponent {
 
   @Input()
   set sudokuString(sudoku: string) {
-    console.log(sudoku);
     if (!sudoku) {
       this.unvalidBoard = true;
       return;
@@ -66,8 +65,7 @@ export class SudokuComponent {
         }
       }
     }
-    // this.grid = this.transposeGrid(this.grid);
-    console.log(this.grid);
+
   }
 
 
@@ -99,7 +97,6 @@ export class SudokuComponent {
     if(this.hintIsOn) return;
     this.grid[this.selectedCell.row][this.selectedCell.col].content = numberSelected.toString();
     this.checkForValidation(this.selectedCell.row, this.selectedCell.col, numberSelected);
-    console.log(this.grid);
     this.selectedCell.row = -1;
     this.selectedCell.col = -1;
   }
@@ -246,7 +243,6 @@ export class SudokuComponent {
       for (let col = 0; col < 9; col++) {
         if(!this.grid[row][col].style.has("filled")) {
           const possibleNumbers = this.sudoku_PossibleNumbers_RightNow.find(x => x.row == row && x.col == col)?.array as number[];
-          console.log(possibleNumbers.toString().replaceAll(","," "));
           this.grid[row][col].style.add("Hint3");
           this.grid[row][col].hints = possibleNumbers.toString().replaceAll(","," ");
           this.HintsOn = true;
@@ -269,7 +265,6 @@ export class SudokuComponent {
       for (let col = 0; col < 9; col++) {
         if (this.grid[row][col].content == "0") {
           const possibleNumbers = this.getPossibleNumbers(row, col);
-          console.log([row, col, possibleNumbers]);
           sudoku_PossibleNumbers.push({row: row, col: col, array: possibleNumbers});
           this.sudoku_PossibleNumbers_RightNow.push({row: row, col: col, array: possibleNumbers});
 
@@ -292,7 +287,6 @@ export class SudokuComponent {
     }
     else if (this.LockedCandidatesRows(sudoku_PossibleNumbers) == 1){
       this.printPossibaleNumberOnBoard();
-      console.log("Option 1 Work!");
       this.printPossibaleNumberOnBoard();
     }
     else if (this.LockedCandidatesCols(sudoku_PossibleNumbers) == 1){
@@ -301,7 +295,6 @@ export class SudokuComponent {
     }
     else{
       this.LockedCandidatesCols(sudoku_PossibleNumbers)
-      alert("There is no Posible moves!")
       this.printPossibaleNumberOnBoard();
     }
 
@@ -433,7 +426,6 @@ export class SudokuComponent {
         num_to_delete = [];
       }
     }
-    console.log("Didnt found!!!!!!!!!!!!!!!!");
     return 0;
   }
 
