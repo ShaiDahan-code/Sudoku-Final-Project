@@ -17,7 +17,7 @@ export class SudokuGameComponent implements OnInit{
   private rowSelected!: number;
 
   boardString!: string;
-  boardStringSolve!: string;
+  boardStringSolution!: string;
   private easyPuzzle: any;
   constructor(private route: ActivatedRoute,private httpClient: HttpClient,private puzzleService: PuzzleService, public userService: UserService){
 
@@ -31,6 +31,7 @@ export class SudokuGameComponent implements OnInit{
     this.easyPuzzle = await this.puzzleService.getPuzzle(this.level);
     console.log(this.easyPuzzle);
     this.boardString = this.easyPuzzle["puzzle"].replaceAll('.','0');
+    this.boardStringSolution = this.easyPuzzle["solution"]
   }
 
 }

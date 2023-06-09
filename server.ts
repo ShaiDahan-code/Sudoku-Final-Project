@@ -37,6 +37,7 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', distFolder);
 
+
 // Fetch all users
   server.get('/api/users', async (req, res) => {
     const Users = db.collection('Users');

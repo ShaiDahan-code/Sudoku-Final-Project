@@ -33,6 +33,7 @@ export class SudokuComponent {
   }
 
   grid!: Cell[][];
+  gridSoulution!: Cell[][];
   selectedCell: GridPosition = {row: -1, col: -1};
   unvalidBoard: boolean = false;
   hovering: boolean = false;
@@ -42,7 +43,20 @@ export class SudokuComponent {
   possibleNumber!: number;
 
 
-  @Input() sudokuStringSolve !: string;
+  @Input()
+  set sudokuStringSolution(sudoku:string){
+    if(!sudoku || sudoku.length !== 81){
+      this.unvalidBoard = true;
+    }
+    this.gridSoulution = [];
+    for (let i = 0; i < 9; i++) {
+      this.gridSoulution[i] = [];
+      for (let j = 0; j < 9; j++) {
+        this.gridSoulution[i][j] = {content: sudoku[i * 9 + j], editable: false, style: new Set([]), isBlock: false,hints:""}
+      }
+    }
+
+  };
   hintIsActive: boolean = false;
 
   @Input()
@@ -95,8 +109,26 @@ export class SudokuComponent {
 
   selectedNumber(numberSelected: number) {
     if(this.hintIsOn) return;
-    this.grid[this.selectedCell.row][this.selectedCell.col].content = numberSelected.toString();
+    let row = this.selectedCell.row;
+    let col = this.selectedCell.col;
+    this.grid[row][col].content = numberSelected.toString();
+
+
     this.checkForValidation(this.selectedCell.row, this.selectedCell.col, numberSelected);
+
+    if(this.grid[row][col].content !== this.gridSoulution[row][col].content && numberSelected !== 0){
+      this.grid[row][col].style.add('err');
+      this.grid[row][col].style.delete("valid");
+      this.BlockAllButtons(row, col)
+    }
+    else{
+      this.ReleaseAllButtons(row, col)
+      this.grid[row][col].style.add("valid");
+      this.grid[row][col].style.delete("err");
+      this.gameEnded = this.checkForWin();
+    }
+
+    console.log(this.grid);
     this.selectedCell.row = -1;
     this.selectedCell.col = -1;
   }
