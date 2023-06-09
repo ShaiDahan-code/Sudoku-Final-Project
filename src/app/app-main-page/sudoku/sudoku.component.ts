@@ -184,6 +184,7 @@ export class SudokuComponent {
       this.gameEnded = this.checkForWin();
     }
     this.deleteHover();
+    this.grid[row][col].style.delete("selected");
 
   }
 
