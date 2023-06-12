@@ -83,7 +83,6 @@ export class LoginRegisterSliderComponent {
       this.http.post('/api/data', this.registerForm.value).subscribe(
         response => {
           this.users = Object.entries(response);
-          console.log(response);
           this.registerForm.reset();
           this.registerForm.setAsyncValidators(null);
           this.registerCompleted = 'Your account has been created successfully!';
@@ -137,7 +136,6 @@ export class LoginRegisterSliderComponent {
     this.http.post('/api/login', this.loginForm.value).subscribe(
       response => {
         // Login was successful, handle response here
-        console.log(response);
         this.loginForm.reset();
         // @ts-ignore
         let user_name = response['user_name'] as string;

@@ -45,7 +45,6 @@ export class PuzzleService {
     } else {
       const response = await this.http.get('../../../assets/boards_data.txt', {responseType: 'text'}).toPromise();
       if (!response) { // add a null check for the response object
-        console.log("Error: No response from server");
         return [];
       }
       const rows = response.split('\n').map(line => line.trim());
@@ -55,7 +54,6 @@ export class PuzzleService {
         return {id, puzzle, solution, clues, difficulty};
       });
       this.puzzles = puzzles;
-      console.log(puzzles);
       return puzzles;
     }
   }

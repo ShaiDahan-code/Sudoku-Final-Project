@@ -16,7 +16,6 @@ let db: Db;
 async function startDatabase() {
   const client = new MongoClient('mongodb+srv://vinox1924:ttE94R3hFW8LomGA@sudoku.dcwoe3h.mongodb.net/?retryWrites=true&w=majority');
   await client.connect();
-  console.log('Connected to database');
   db = client.db('Sudoku');
 }
 
@@ -112,7 +111,6 @@ function run(): void {
   const server = app();
   // Add your POST endpoint
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
   });
 
 }

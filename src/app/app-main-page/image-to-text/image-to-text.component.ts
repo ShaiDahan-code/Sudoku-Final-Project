@@ -32,7 +32,6 @@ export class ImageToTextComponent implements OnInit {
           .replaceAll("|", "").replaceAll("(", "")
           .replace(/[a-zA-Z]/g, "0").replaceAll(' ', '0');
         this.imageText = this.checkEveryLineSize(this.imageText.split("\n"));
-        console.log(this.imageText);
         loadingPopup = document.getElementById('loading-clear') || document.getElementById('loading-popup-display');
         if (loadingPopup) {
           loadingPopup.id = 'loading-clear';
@@ -77,7 +76,6 @@ export class ImageToTextComponent implements OnInit {
   }
   defaultBtnActive(){
     this.defaultBtn = document.getElementById("fileEvent");
-    console.log(this.defaultBtn);
     this.defaultBtn.click()
   }
 

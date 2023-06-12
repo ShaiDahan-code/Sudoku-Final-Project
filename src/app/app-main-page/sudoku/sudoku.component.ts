@@ -128,7 +128,6 @@ export class SudokuComponent {
       this.gameEnded = this.checkForWin();
     }
 
-    console.log(this.grid);
     this.selectedCell.row = -1;
     this.selectedCell.col = -1;
   }
